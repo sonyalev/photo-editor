@@ -1,25 +1,23 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [image, setImage] = useState(null);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const imageURL = URL.createObjectURL(file);
+    setImage(imageURL);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Онлайн редактор фото</h1>
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
+      {image && <img src={image} alt="Завантажене фото" style={{ maxWidth: '80%', marginTop: '20px' }} />}
     </div>
   );
 }
 
 export default App;
+
