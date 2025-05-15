@@ -15,14 +15,20 @@ function EditorLoggedIn() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (!user) {
-      navigate('/login');
-    } else {
-      const parsedUser = JSON.parse(user);
-      setUserId(parsedUser.id);
-    }
-  }, [navigate]);
+  const user = localStorage.getItem('user');
+  if (!user) {
+    navigate('/login');
+  } else {
+    const parsedUser = JSON.parse(user);
+    setUserId(parsedUser.id);
+  }
+
+  const editImage = localStorage.getItem('editImageURL');
+  if (editImage) {
+    setImageURL(editImage);
+    localStorage.removeItem('editImageURL'); // Щоб не залишалось після оновлення
+  }
+}, [navigate]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
