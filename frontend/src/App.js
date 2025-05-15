@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Register from './components/Register';
 import Login from './pages/Login';
 import EditorLoggedIn from './pages/EditorLoggedIn';
+import SavedImagesPage from './pages/SavedImagesPage'; 
+
 
 function App() {
 
@@ -24,12 +26,17 @@ function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/editor" element={<EditorLoggedIn />} />
         <Route path="/profile" element={<Profile userId={1} />} />  // (userId має бути з контексту або стейту)
+        <Route path="/saved-images" element={<SavedImagesPage />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+
+
+
 
 
 

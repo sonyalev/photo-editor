@@ -1,11 +1,11 @@
 // frontend/src/pages/EditorLoggedIn.js
+// frontend/src/pages/EditorLoggedIn.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
 import FilterSelector from '../components/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
-import SavedImages from '../components/SavedImages';  // Імпортуємо компонент
 
 function EditorLoggedIn() {
   const [imageFile, setImageFile] = useState(null);
@@ -64,8 +64,7 @@ function EditorLoggedIn() {
 
           if (res.ok) {
             alert('Фото успішно збережено!');
-            // Оновити список збережених фото після збереження
-            setImageURL(null); // очистити редаговане фото, якщо хочеш
+            setImageURL(null); // опціонально очищаємо
           } else {
             alert('Помилка збереження фото');
           }
@@ -80,8 +79,18 @@ function EditorLoggedIn() {
   return (
     <div style={{ background: '#f0f8ff', padding: '20px', minHeight: '100vh' }}>
       <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
+
+      {/* Кнопка переходу на сторінку збережених фото */}
+      <button
+        onClick={() => navigate('/saved-images')}
+        style={{ marginBottom: '20px', padding: '8px 12px' }}
+      >
+        Переглянути збережені фото
+      </button>
+
       <ImageUploader onImageChange={handleImageChange} />
       <FilterSelector filter={filter} onFilterChange={handleFilterChange} />
+
       {imageURL && (
         <>
           <ImagePreview image={imageURL} filter={filter} />
@@ -94,13 +103,11 @@ function EditorLoggedIn() {
           </button>
         </>
       )}
-
-      {/* Тут додаємо компонент для перегляду збережених фото */}
-      {userId && <SavedImages userId={userId} />}
     </div>
   );
 }
 
 export default EditorLoggedIn;
+
 
 
