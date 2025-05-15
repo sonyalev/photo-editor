@@ -25,6 +25,7 @@ function Register() {
 
     if (data.message === 'Користувач зареєстрований') {
       // Після успішної реєстрації перенаправляємо на сторінку редактора
+      localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/editor');
     }
   };

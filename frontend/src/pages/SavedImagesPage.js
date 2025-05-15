@@ -1,3 +1,4 @@
+// frontend/src/pages/SavedImagesPage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SavedImages from '../components/SavedImages';
