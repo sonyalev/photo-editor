@@ -1,10 +1,10 @@
 // frontend/src/components/SavedImages.js
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import ImageEditor from './ImageEditor';
 
 function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
-  const navigate = useNavigate();
+  const [editingImage, setEditingImage] = useState(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -16,42 +16,59 @@ function SavedImages({ userId }) {
         console.error('Помилка при завантаженні зображень:', err);
       }
     };
-
     if (userId) fetchImages();
   }, [userId]);
 
+  const handleSave = (updatedImage) => {
+    setImages((imgs) =>
+      imgs.map((img) => (img.id === updatedImage.id ? updatedImage : img))
+    );
+    setEditingImage(null);
+  };
 
-  const handleOptionClick = (image, option) => {
-    if (option === 'view') {
-      window.open(image.url, '_blank');
-    } else if (option === 'download') {
-      const a = document.createElement('a');
-      a.href = image.url;
-      a.download = 'image.png';
-      a.click();
-    } else if (option === 'edit') {
-      localStorage.setItem('editImageURL', image.url); // Зберігаємо URL в локальне сховище
-      navigate('/editor'); // Перенаправлення
-    }
+  const handleSaveNew = (newImage) => {
+    setImages((imgs) => [newImage, ...imgs]);
+    setEditingImage(null);
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <h2>Ваші збережені фото</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-        {images.map((img) => (
-          <div key={img.id} style={{ border: '1px solid #ccc', padding: '10px' }}>
-            <img src={img.url} alt="saved" width="200" />
-            <div style={{ marginTop: '10px' }}>
-              <button onClick={() => handleOptionClick(img, 'view')}>Переглянути</button>
-              <button onClick={() => handleOptionClick(img, 'download')}>Завантажити</button>
-              <button onClick={() => handleOptionClick(img, 'edit')}>Редагувати</button>
+      {editingImage ? (
+        <ImageEditor
+          image={editingImage}
+          onSave={handleSave}
+          onSaveNew={handleSaveNew}
+          onClose={() => setEditingImage(null)}
+        />
+      ) : (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          {images.map((img) => (
+            <div key={img.id} style={{ border: '1px solid #ccc', padding: '10px' }}>
+              <img src={img.url} alt="saved" width={200} />
+              <div style={{ marginTop: '10px' }}>
+                <button onClick={() => window.open(img.url, '_blank')}>Переглянути</button>
+                <button
+                  onClick={() => {
+                    const a = document.createElement('a');
+                    a.href = img.url;
+                    a.download = img.filename || 'image.png';
+                    a.click();
+                  }}
+                >
+                  Завантажити
+                </button>
+                <button onClick={() => setEditingImage(img)}>Редагувати</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 export default SavedImages;
+
+
+

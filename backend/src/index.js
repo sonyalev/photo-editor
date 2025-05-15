@@ -1,17 +1,34 @@
 // backend/src/index.js
+// backend/src/index.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // ← потрібно для роботи з файловими шляхами
+const path = require('path');
+const http = require('http');
+const { WebSocketServer } = require('ws');
 require('dotenv').config();
 
-// Ініціалізація Express
 const app = express();
+const server = http.createServer(app);
+const PORT = process.env.PORT || 5000;
 
-// Середовища
+// === WebSocket Server ===
+const wss = new WebSocketServer({ server, path: '/ws' });
+
+wss.on('connection', (ws) => {
+  console.log('🟢 Нове WebSocket з’єднання');
+  ws.on('message', (message) => {
+    console.log('📩 Повідомлення:', message.toString());
+    ws.send(`Відповідь сервера: ${message}`);
+  });
+  ws.send('Підключено до WebSocket сервера!');
+});
+
+// === Middleware ===
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
-// === Підключення маршрутів ===
+// === Routes ===
 const authRoutes = require('./routes/auth');
 const imageRoutes = require('./routes/images');
 
@@ -21,14 +38,12 @@ console.log('Маршрути auth підключено');
 app.use('/api/images', imageRoutes);
 console.log('Маршрути images підключено');
 
-// === Статичні файли (зображення) ===
-// Сервер дозволяє доступ до /uploads (для зображень)
+// === Статичні файли ===
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // === Запуск сервера ===
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`✅ Сервер запущено на http://localhost:${PORT}`);
 });
 
 
