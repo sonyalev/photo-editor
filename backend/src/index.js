@@ -22,3 +22,7 @@ app.listen(PORT, () => {
 });
 
 
+const imageRoutes = require('./routes/images');
+app.use('/api/images', imageRoutes);
+
+app.use('/src/uploads', express.static('src/uploads'));

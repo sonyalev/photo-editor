@@ -1,4 +1,4 @@
-// src/pages/Home.js
+// frontend/src/pages/Home.js
 import React, { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';

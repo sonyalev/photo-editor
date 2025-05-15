@@ -1,4 +1,4 @@
-// src/pages/EditorLoggedIn.js
+// frontend/src/pages/EditorLoggedIn.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../components/ImageUploader';
@@ -7,12 +7,12 @@ import FilterSelector from '../components/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
 
 function EditorLoggedIn() {
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
   const [filter, setFilter] = useState('none');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Якщо немає даних про користувача (не увійшов), редірект на сторінку входу
     const user = localStorage.getItem('user');
     if (!user) {
       navigate('/login');
@@ -22,7 +22,8 @@ function EditorLoggedIn() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      setImageFile(file);
+      setImageURL(URL.createObjectURL(file));
     }
   };
 
@@ -30,15 +31,62 @@ function EditorLoggedIn() {
     setFilter(e.target.value);
   };
 
+  const saveImage = () => {
+    const canvas = document.createElement('canvas');
+    const img = new Image();
+
+    img.crossOrigin = "anonymous";
+    img.src = imageURL;
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+
+      ctx.filter = filter;
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'edited-image.png');
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        formData.append('userId', user ? user.id : 1);
+
+        try {
+          const res = await fetch('http://localhost:5000/api/images/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (res.ok) {
+            alert('Фото успішно збережено!');
+          } else {
+            alert('Помилка збереження фото');
+          }
+        } catch (err) {
+          alert('Помилка сервера');
+          console.error(err);
+        }
+      }, 'image/png');
+    };
+  };
+
   return (
     <div style={{ background: '#f0f8ff', padding: '20px', minHeight: '100vh' }}>
       <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
       <ImageUploader onImageChange={handleImageChange} />
       <FilterSelector filter={filter} onFilterChange={handleFilterChange} />
-      {image && (
+      {imageURL && (
         <>
-          <ImagePreview image={image} filter={filter} />
-          <DownloadButton image={image} />
+          <ImagePreview image={imageURL} filter={filter} />
+          <DownloadButton image={imageURL} />
+          <button
+            onClick={saveImage}
+            style={{ marginLeft: '10px', padding: '8px 12px' }}
+          >
+            Зберегти фото
+          </button>
         </>
       )}
     </div>
@@ -46,3 +94,4 @@ function EditorLoggedIn() {
 }
 
 export default EditorLoggedIn;
+

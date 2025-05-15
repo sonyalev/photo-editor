@@ -1,7 +1,7 @@
-// src/App.js
+// frontend/src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import Profile from './pages/Profile';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Register from './components/Register';
@@ -23,12 +23,16 @@ function App() {
         <Route path="/editor" element={<EditorLoggedIn />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/editor" element={<EditorLoggedIn />} />
+        <Route path="/profile" element={<Profile userId={1} />} />  // (userId має бути з контексту або стейту)
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+
+
 
 
 

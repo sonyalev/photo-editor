@@ -1,4 +1,4 @@
-// server/routes/photos.js
+// backend/routes/photos.js
 const express = require('express');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
