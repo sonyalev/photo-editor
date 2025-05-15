@@ -5,17 +5,22 @@ import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
 import FilterSelector from '../components/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
+import SavedImages from '../components/SavedImages';  // Імпортуємо компонент
 
 function EditorLoggedIn() {
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const [filter, setFilter] = useState('none');
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (!user) {
       navigate('/login');
+    } else {
+      const parsedUser = JSON.parse(user);
+      setUserId(parsedUser.id);
     }
   }, [navigate]);
 
@@ -49,9 +54,7 @@ function EditorLoggedIn() {
       canvas.toBlob(async (blob) => {
         const formData = new FormData();
         formData.append('image', blob, 'edited-image.png');
-
-        const user = JSON.parse(localStorage.getItem('user'));
-        formData.append('userId', user ? user.id : 1);
+        formData.append('userId', userId);
 
         try {
           const res = await fetch('http://localhost:5000/api/images/upload', {
@@ -61,6 +64,8 @@ function EditorLoggedIn() {
 
           if (res.ok) {
             alert('Фото успішно збережено!');
+            // Оновити список збережених фото після збереження
+            setImageURL(null); // очистити редаговане фото, якщо хочеш
           } else {
             alert('Помилка збереження фото');
           }
@@ -89,9 +94,13 @@ function EditorLoggedIn() {
           </button>
         </>
       )}
+
+      {/* Тут додаємо компонент для перегляду збережених фото */}
+      {userId && <SavedImages userId={userId} />}
     </div>
   );
 }
 
 export default EditorLoggedIn;
+
 
