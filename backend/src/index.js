@@ -1,5 +1,4 @@
 // backend/src/index.js
-// backend/src/index.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -33,10 +32,8 @@ const authRoutes = require('./routes/auth');
 const imageRoutes = require('./routes/images');
 
 app.use('/api/auth', authRoutes);
-console.log('Маршрути auth підключено');
-
 app.use('/api/images', imageRoutes);
-console.log('Маршрути images підключено');
+
 
 // === Статичні файли ===
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

@@ -1,6 +1,7 @@
 // frontend/src/components/SavedImages.js
 import React, { useEffect, useState } from 'react';
 import ImageEditor from './ImageEditor';
+import DownloadButton from './DownloadButton';
 
 function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
@@ -48,16 +49,7 @@ function SavedImages({ userId }) {
               <img src={img.url} alt="saved" width={200} />
               <div style={{ marginTop: '10px' }}>
                 <button onClick={() => window.open(img.url, '_blank')}>Переглянути</button>
-                <button
-                  onClick={() => {
-                    const a = document.createElement('a');
-                    a.href = img.url;
-                    a.download = img.filename || 'image.png';
-                    a.click();
-                  }}
-                >
-                  Завантажити
-                </button>
+                <DownloadButton imageUrl={img.url} />
                 <button onClick={() => setEditingImage(img)}>Редагувати</button>
               </div>
             </div>

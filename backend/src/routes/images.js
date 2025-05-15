@@ -46,7 +46,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-// Оновлення існуючого зображення за id
+// заміна існуючого зображення за id
 router.put('/:id', upload.single('image'), async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;

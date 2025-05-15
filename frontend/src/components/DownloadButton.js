@@ -1,30 +1,31 @@
 // frontebd/src/components/DownloadButton.js
+// frontend/src/components/DownloadButton.js
 import React from 'react';
 
-function DownloadButton({ image }) {
-  const downloadImage = () => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.src = image;
+function DownloadButton({ imageUrl, filename = 'image.png' }) {
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
 
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
 
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = 'edited_image.png';
-      link.click();
-    };
+      // Звільнення памʼяті
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Помилка при завантаженні:', error);
+    }
   };
 
-  return (
-    <button onClick={downloadImage}>
-      Завантажити відредаговане зображення
-    </button>
-  );
+  return <button onClick={handleDownload}>Завантажити</button>;
 }
 
 export default DownloadButton;
+
+
