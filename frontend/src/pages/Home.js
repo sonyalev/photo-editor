@@ -65,11 +65,15 @@ function Home() {
       />
 
       {image && (
-        <>
-          <ImagePreview image={image} cssFilter={getCssFilter(filter, intensity)} />
-          <DownloadButton image={image} cssFilter={getCssFilter(filter, intensity)} />
-        </>
-      )}
+  <>
+    <ImagePreview image={image} cssFilter={getCssFilter(filter, intensity)} />
+    <DownloadButton
+      imageUrl={image} // Змінено з image на imageUrl
+      cssFilter={getCssFilter(filter, intensity)} // Додаємо cssFilter
+      filename="edited-image.png"
+    />
+  </>
+)}
     </div>
   );
 }

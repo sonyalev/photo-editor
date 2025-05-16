@@ -132,17 +132,21 @@ function EditorLoggedIn() {
       />
 
       {imageURL && (
-        <>
-          <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
-          <DownloadButton image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
-          <button
-            onClick={saveImage}
-            style={{ marginLeft: '10px', padding: '8px 12px' }}
-          >
-            Зберегти фото
-          </button>
-        </>
-      )}
+  <>
+    <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
+    <DownloadButton
+      imageUrl={imageURL} // Змінено з image на imageUrl
+      cssFilter={getCssFilter(filter, intensity)} // Додаємо cssFilter
+      filename="edited-image.png"
+    />
+    <button
+      onClick={saveImage}
+      style={{ marginLeft: '10px', padding: '8px 12px' }}
+    >
+      Зберегти фото
+    </button>
+  </>
+)}
     </div>
   );
 }
