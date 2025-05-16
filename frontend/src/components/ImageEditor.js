@@ -1,27 +1,33 @@
 // frontend/src/components/ImageEditor.js
 import React, { useRef, useState, useEffect } from 'react';
+import FilterSelector from './Editor/FilterSelector';
+
 
 function ImageEditor({ image, onSave, onSaveNew, onClose }) {
   const canvasRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [filter, setFilter] = useState('none');
+
 
   // Завантажуємо зображення у canvas при зміні image
   useEffect(() => {
-    if (!image) return;
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = image.url;
-    img.onload = () => {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-      setImageSrc(canvas.toDataURL()); // для попереднього перегляду
-    };
-  }, [image]);
+  if (!image) return;
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.src = image.url;
+  img.onload = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.filter = filter;  // застосовуємо фільтр
+    ctx.drawImage(img, 0, 0);
+    setImageSrc(canvas.toDataURL());
+  };
+}, [image, filter]); // додаємо filter до залежностей
+
 
   // Логіка оновлення: видалити старе, потім створити нове
   const handleReplaceImage = async () => {
@@ -119,33 +125,29 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     setIsLoading(false);
   };
 
-  // Просте редагування — малюємо червону півпрозору крапку
-  const handleCanvasClick = (e) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const ctx = canvas.getContext('2d');
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 2 * Math.PI);
-    ctx.fill();
-
-    setImageSrc(canvas.toDataURL()); // оновлення превью
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
   };
+
 
   if (!image) return <div>Оберіть зображення для редагування</div>;
 
   return (
     <div>
       <h3>Редагування зображення</h3>
+
+      <FilterSelector filter={filter} onFilterChange={handleFilterChange} />
+
       <canvas
-        ref={canvasRef}
-        style={{ border: '1px solid #000', cursor: 'crosshair' }}
-        onClick={handleCanvasClick}
-      />
+           ref={canvasRef}
+           style={{
+           border: '1px solid #000',
+           cursor: 'crosshair',
+           filter: filter, // <–– застосування CSS-фільтра
+  }}
+  onClick={FilterSelector}
+/>
+
       <div style={{ marginTop: 10 }}>
         <button onClick={handleReplaceImage} disabled={isLoading}>
           Замінити

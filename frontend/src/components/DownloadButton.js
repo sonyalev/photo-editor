@@ -1,5 +1,4 @@
 // frontebd/src/components/DownloadButton.js
-// frontend/src/components/DownloadButton.js
 import React from 'react';
 
 function DownloadButton({ imageUrl, filename = 'image.png' }) {

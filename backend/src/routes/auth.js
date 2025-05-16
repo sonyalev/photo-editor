@@ -4,7 +4,6 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 
-console.log('Модуль auth.js підключено');
 
 // Маршрут для реєстрації користувачів
 router.post('/register', async (req, res) => {

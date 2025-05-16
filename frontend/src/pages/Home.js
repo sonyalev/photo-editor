@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
-import FilterSelector from '../components/FilterSelector';
+import FilterSelector from '../components/Editor/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
 
 function Home() {
