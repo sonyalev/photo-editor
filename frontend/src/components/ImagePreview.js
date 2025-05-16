@@ -1,7 +1,7 @@
 // frontebd/src/components/ImagePreview.js
 import React from 'react';
 
-function ImagePreview({ image, filter }) {
+function ImagePreview({ image, cssFilter }) {
   return (
     <div>
       <h2>Попередній перегляд:</h2>
@@ -11,11 +11,12 @@ function ImagePreview({ image, filter }) {
         style={{
           width: '100%',
           maxHeight: '500px',
-          filter: filter
+          filter: cssFilter
         }} 
       />
     </div>
   );
 }
+
 
 export default ImagePreview;

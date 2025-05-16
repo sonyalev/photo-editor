@@ -1,5 +1,4 @@
 // frontend/src/pages/EditorLoggedIn.js
-// frontend/src/pages/EditorLoggedIn.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../components/ImageUploader';
@@ -11,24 +10,51 @@ function EditorLoggedIn() {
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const [filter, setFilter] = useState('none');
+  const [intensity, setIntensity] = useState(100);
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-  const user = localStorage.getItem('user');
-  if (!user) {
-    navigate('/login');
-  } else {
-    const parsedUser = JSON.parse(user);
-    setUserId(parsedUser.id);
-  }
+    const user = localStorage.getItem('user');
+    if (!user) {
+      navigate('/login');
+    } else {
+      const parsedUser = JSON.parse(user);
+      setUserId(parsedUser.id);
+    }
 
-  const editImage = localStorage.getItem('editImageURL');
-  if (editImage) {
-    setImageURL(editImage);
-    localStorage.removeItem('editImageURL'); // Щоб не залишалось після оновлення
-  }
-}, [navigate]);
+    const editImage = localStorage.getItem('editImageURL');
+    if (editImage) {
+      setImageURL(editImage);
+      localStorage.removeItem('editImageURL');
+    }
+  }, [navigate]);
+
+  const FILTERS = [
+    { name: 'Без фільтру', value: 'none', unit: '' },
+    { name: 'Чорно-білий', value: 'grayscale', unit: '%' },
+    { name: 'Сепія', value: 'sepia', unit: '%' },
+    { name: 'Інверсія', value: 'invert', unit: '%' },
+    { name: 'Розмиття', value: 'blur', unit: 'px' },
+    { name: 'Яскравість', value: 'brightness', unit: '%' },
+    { name: 'Контраст', value: 'contrast', unit: '%' },
+    { name: 'Зміна відтінку', value: 'hue-rotate', unit: 'deg' },
+    { name: 'Насиченість', value: 'saturate', unit: '%' },
+    { name: 'Прозорість', value: 'opacity', unit: '%' },
+  ];
+
+  const getCssFilter = (filter, intensity) => {
+    if (filter === 'none') return 'none';
+
+    const f = FILTERS.find(f => f.value === filter);
+    if (!f) return 'none';
+
+    let val = intensity;
+    if (f.unit === 'deg') val = intensity * 3.6;
+    else if (f.unit === 'px') val = (intensity / 100) * 10;
+
+    return `${filter}(${val}${f.unit})`;
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,8 +64,12 @@ function EditorLoggedIn() {
     }
   };
 
-  const handleFilterChange = (e) => {
-    setFilter(e.target.value);
+  const handleFilterChange = (filterValue) => {
+    setFilter(filterValue);
+  };
+
+  const handleIntensityChange = (value) => {
+    setIntensity(value);
   };
 
   const saveImage = () => {
@@ -54,7 +84,7 @@ function EditorLoggedIn() {
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
 
-      ctx.filter = filter;
+      ctx.filter = getCssFilter(filter, intensity);
       ctx.drawImage(img, 0, 0);
 
       canvas.toBlob(async (blob) => {
@@ -70,7 +100,7 @@ function EditorLoggedIn() {
 
           if (res.ok) {
             alert('Фото успішно збережено!');
-            setImageURL(null); // опціонально очищаємо
+            setImageURL(null);
           } else {
             alert('Помилка збереження фото');
           }
@@ -86,7 +116,6 @@ function EditorLoggedIn() {
     <div style={{ background: '#f0f8ff', padding: '20px', minHeight: '100vh' }}>
       <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
 
-      {/* Кнопка переходу на сторінку збережених фото */}
       <button
         onClick={() => navigate('/saved-images')}
         style={{ marginBottom: '20px', padding: '8px 12px' }}
@@ -95,12 +124,17 @@ function EditorLoggedIn() {
       </button>
 
       <ImageUploader onImageChange={handleImageChange} />
-      <FilterSelector filter={filter} onFilterChange={handleFilterChange} />
+      <FilterSelector
+        filter={filter}
+        intensity={intensity}
+        onFilterChange={handleFilterChange}
+        onIntensityChange={handleIntensityChange}
+      />
 
       {imageURL && (
         <>
-          <ImagePreview image={imageURL} filter={filter} />
-          <DownloadButton image={imageURL} />
+          <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
+          <DownloadButton image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
           <button
             onClick={saveImage}
             style={{ marginLeft: '10px', padding: '8px 12px' }}
@@ -114,6 +148,7 @@ function EditorLoggedIn() {
 }
 
 export default EditorLoggedIn;
+
 
 
 
