@@ -1,6 +1,7 @@
 // frontend/src/pages/EditorLoggedIn.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cropper from 'react-cropper';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
 import FilterSelector from '../components/Editor/FilterSelector';
@@ -12,6 +13,8 @@ function EditorLoggedIn() {
   const [filter, setFilter] = useState('none');
   const [intensity, setIntensity] = useState(100);
   const [userId, setUserId] = useState(null);
+  const [isCropping, setIsCropping] = useState(false);
+  const cropperRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,8 +48,7 @@ function EditorLoggedIn() {
 
   const getCssFilter = (filter, intensity) => {
     if (filter === 'none') return 'none';
-
-    const f = FILTERS.find(f => f.value === filter);
+    const f = FILTERS.find((f) => f.value === filter);
     if (!f) return 'none';
 
     let val = intensity;
@@ -61,7 +63,25 @@ function EditorLoggedIn() {
     if (file) {
       setImageFile(file);
       setImageURL(URL.createObjectURL(file));
+      setIsCropping(false);
     }
+  };
+
+  const handleCrop = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper) return;
+
+    const croppedCanvas = cropper.getCroppedCanvas();
+    if (!croppedCanvas) {
+      alert('Помилка при обрізанні зображення');
+      return;
+    }
+
+    croppedCanvas.toBlob((blob) => {
+      setImageFile(blob);
+      setImageURL(croppedCanvas.toDataURL('image/png'));
+      setIsCropping(false);
+    }, 'image/png');
   };
 
   const handleFilterChange = (filterValue) => {
@@ -75,8 +95,7 @@ function EditorLoggedIn() {
   const saveImage = () => {
     const canvas = document.createElement('canvas');
     const img = new Image();
-
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
     img.src = imageURL;
 
     img.onload = () => {
@@ -101,6 +120,7 @@ function EditorLoggedIn() {
           if (res.ok) {
             alert('Фото успішно збережено!');
             setImageURL(null);
+            setImageFile(null);
           } else {
             alert('Помилка збереження фото');
           }
@@ -131,28 +151,57 @@ function EditorLoggedIn() {
         onIntensityChange={handleIntensityChange}
       />
 
+      <div style={{ marginTop: 10 }}>
+        <button onClick={() => setIsCropping(!isCropping)}>
+          {isCropping ? 'Закрити обрізку' : 'Обрізати зображення'}
+        </button>
+      </div>
+
       {imageURL && (
-  <>
-    <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
-    <DownloadButton
-      imageUrl={imageURL} // Змінено з image на imageUrl
-      cssFilter={getCssFilter(filter, intensity)} // Додаємо cssFilter
-      filename="edited-image.png"
-    />
-    <button
-      onClick={saveImage}
-      style={{ marginLeft: '10px', padding: '8px 12px' }}
-    >
-      Зберегти фото
-    </button>
-  </>
-)}
+        <>
+          {isCropping ? (
+            <div style={{ marginTop: 10 }}>
+              <Cropper
+                src={imageURL}
+                style={{ height: 400, width: '100%' }}
+                initialAspectRatio={1}
+                guides={true}
+                viewMode={1}
+                minCropBoxWidth={100}
+                minCropBoxHeight={100}
+                background={false}
+                responsive={true}
+                autoCropArea={0.8}
+                checkCrossOrigin={true}
+                ref={cropperRef}
+              />
+              <button onClick={handleCrop} style={{ marginTop: 10 }}>
+                Застосувати обрізку
+              </button>
+            </div>
+          ) : (
+            <>
+              <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
+              <DownloadButton
+                imageUrl={imageURL}
+                cssFilter={getCssFilter(filter, intensity)}
+                filename="edited-image.png"
+              />
+              <button
+                onClick={saveImage}
+                style={{ marginLeft: '10px', padding: '8px 12px' }}
+              >
+                Зберегти фото
+              </button>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
 
 export default EditorLoggedIn;
-
 
 
 
