@@ -84,7 +84,7 @@ function Home() {
 
       <div style={{ marginTop: 10 }}>
         <button onClick={() => setIsCropping(!isCropping)}>
-          {isCropping ? 'Закрити обрізку' : 'Обрізати зображення'}
+          {isCropping ? 'Скасувати' : 'Обрізати зображення'}
         </button>
       </div>
 

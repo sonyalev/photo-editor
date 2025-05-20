@@ -202,7 +202,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
       <div style={{ marginTop: 10 }}>
         <button onClick={() => setIsCropping(!isCropping)} disabled={isLoading}>
-          {isCropping ? 'Закрити обрізку' : 'Обрізати зображення'}
+          {isCropping ? 'Скасувати' : 'Обрізати зображення'}
         </button>
       </div>
 
