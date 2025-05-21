@@ -6,6 +6,8 @@ import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
 import FilterSelector from '../components/Editor/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
+import '../styles/EditorLoggedIn.css';
+import 'cropperjs/dist/cropper.css';
 
 function EditorLoggedIn() {
   const [imageFile, setImageFile] = useState(null);
@@ -14,6 +16,7 @@ function EditorLoggedIn() {
   const [intensity, setIntensity] = useState(100);
   const [userId, setUserId] = useState(null);
   const [isCropping, setIsCropping] = useState(false);
+  const [showFilterSelector, setShowFilterSelector] = useState(false);
   const cropperRef = useRef(null);
   const navigate = useNavigate();
 
@@ -64,6 +67,7 @@ function EditorLoggedIn() {
       setImageFile(file);
       setImageURL(URL.createObjectURL(file));
       setIsCropping(false);
+      setShowFilterSelector(false);
     }
   };
 
@@ -133,34 +137,53 @@ function EditorLoggedIn() {
   };
 
   return (
-    <div style={{ background: '#f0f8ff', padding: '20px', minHeight: '100vh' }}>
-      <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
-
-      <button
-        onClick={() => navigate('/saved-images')}
-        style={{ marginBottom: '20px', padding: '8px 12px' }}
-      >
-        Переглянути збережені фото
-      </button>
-
-      <ImageUploader onImageChange={handleImageChange} />
-      <FilterSelector
-        filter={filter}
-        intensity={intensity}
-        onFilterChange={handleFilterChange}
-        onIntensityChange={handleIntensityChange}
-      />
-
-      <div style={{ marginTop: 10 }}>
-        <button onClick={() => setIsCropping(!isCropping)}>
-          {isCropping ? 'Скасувати' : 'Обрізати зображення'}
+    <div className="editor-logged-in-container">
+      <div className="header">
+        <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
+        <button
+          className="saved-images-button"
+          onClick={() => navigate('/saved-images')}
+        >
+          Переглянути збережені фото
         </button>
       </div>
 
+      <ImageUploader onImageChange={handleImageChange} buttonClass="button-85" />
+
       {imageURL && (
         <>
-          {isCropping ? (
-            <div style={{ marginTop: 10 }}>
+          <div className="editor-controls">
+            <button
+              className="gradient-button"
+              onClick={() => {
+                console.log('Toggle filter selector:', !showFilterSelector);
+                setShowFilterSelector(!showFilterSelector);
+              }}
+            >
+              {showFilterSelector ? 'Сховати фільтри' : 'Фільтр'}
+            </button>
+            <button
+              className="gradient-button"
+              onClick={() => {
+                console.log('Toggle cropping:', !isCropping);
+                setIsCropping(!isCropping);
+              }}
+            >
+              {isCropping ? 'Скасувати' : 'Обрізати'}
+            </button>
+          </div>
+
+          {showFilterSelector && (
+            <FilterSelector
+              filter={filter}
+              intensity={intensity}
+              onFilterChange={handleFilterChange}
+              onIntensityChange={handleIntensityChange}
+            />
+          )}
+
+          {isCropping && (
+            <div style={{ marginTop: '20px', width: '100%', maxWidth: '800px' }}>
               <Cropper
                 src={imageURL}
                 style={{ height: 400, width: '100%' }}
@@ -175,24 +198,28 @@ function EditorLoggedIn() {
                 checkCrossOrigin={true}
                 ref={cropperRef}
               />
-              <button onClick={handleCrop} style={{ marginTop: 10 }}>
-                Застосувати обрізку
-              </button>
+              <div className="editor-controls" style={{ marginTop: '20px' }}>
+                <button className="gradient-button" onClick={handleCrop}>
+                  Застосувати
+                </button>
+              </div>
             </div>
-          ) : (
+          )}
+
+          {!isCropping && (
             <>
               <ImagePreview image={imageURL} cssFilter={getCssFilter(filter, intensity)} />
-              <DownloadButton
-                imageUrl={imageURL}
-                cssFilter={getCssFilter(filter, intensity)}
-                filename="edited-image.png"
-              />
-              <button
-                onClick={saveImage}
-                style={{ marginLeft: '10px', padding: '8px 12px' }}
-              >
-                Зберегти фото
-              </button>
+              <div className="editor-controls">
+                <DownloadButton
+                  imageUrl={imageURL}
+                  cssFilter={getCssFilter(filter, intensity)}
+                  filename="edited-image.png"
+                  buttonClass="download-button"
+                />
+                <button className="download-button" onClick={saveImage}>
+                  Зберегти фото
+                </button>
+              </div>
             </>
           )}
         </>
@@ -202,6 +229,4 @@ function EditorLoggedIn() {
 }
 
 export default EditorLoggedIn;
-
-
 
