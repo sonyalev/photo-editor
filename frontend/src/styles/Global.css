@@ -97,27 +97,78 @@
   font-weight: 700;
 }
 
-.global-container form {
+.global-container .contact-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 800px;
+  margin: 20px 0;
+}
+
+.global-container .contact-details {
+  flex: 1;
+}
+
+.global-container .contact-details p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.global-container .contact-icon {
+  color: #007bff;
+  font-size: 18px;
+}
+
+.global-container .contact-details a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.global-container .contact-details a:hover {
+  text-decoration: underline;
+}
+
+.global-container .contact-form {
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.global-container .contact-form form {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 15px;
 }
 
-.global-container form label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #000000;
+.global-container .form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.global-container form input,
-.global-container form textarea,
-.global-container form select {
+.global-container .form-group.form-group-icon {
+  position: relative;
+}
+
+.global-container .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.global-container .input-icon {
+  position: absolute;
+  left: 12px;
+  color: #666666;
+  font-size: 16px;
+}
+
+.global-container .form-group input,
+.global-container .form-group textarea,
+.global-container .form-group select {
   background: #f5f5f5;
   border: none;
   border-radius: 8px;
@@ -128,20 +179,38 @@
   outline: none;
   width: 100%;
   box-sizing: border-box;
+  transition: box-shadow 0.3s;
 }
 
-.global-container form textarea {
+.global-container .form-group input:focus,
+.global-container .form-group textarea:focus,
+.global-container .form-group select:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.global-container .form-group input[type="email"] {
+  padding-left: 36px; /* Простір для іконки */
+}
+
+.global-container .form-group textarea {
   resize: vertical;
   min-height: 100px;
 }
 
-.global-container form input::placeholder,
-.global-container form textarea::placeholder {
+.global-container .form-group input::placeholder,
+.global-container .form-group textarea::placeholder {
   color: #888888;
 }
 
+.global-container .form-message {
+  text-align: center;
+  color: #28a745;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
 .global-container .back-button,
-.global-container form button {
+.global-container .submit-button {
   background: #bed5fb;
   border: none;
   border-radius: 10px;
@@ -153,19 +222,26 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   margin: 10px auto;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.global-container .submit-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .global-container .back-button:disabled,
-.global-container form button:disabled {
+.global-container .submit-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 .global-container .floating-left {
-  float: left;
-  margin-right: 20px;
+  float: none;
+  margin: 0 auto 20px;
   max-width: 150px;
 }
 
@@ -191,6 +267,37 @@
 .global-container .image-map-container img {
   max-width: 100%;
   height: auto;
+}
+
+.global-container .how-to-find {
+  max-width: 800px;
+  margin: 20px 0;
+}
+
+.global-container .social-links {
+  max-width: 800px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.global-container .social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.global-container .social-link:hover {
+  background: #bed5fb;
+}
+
+.global-container .social-icon {
+  font-size: 18px;
 }
 
 .global-container .messages-list {
@@ -247,15 +354,28 @@
     font-size: 14px;
   }
 
-  .global-container form {
+  .global-container .contact-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .global-container .contact-form form {
     max-width: 300px;
   }
 
-  .global-container form input,
-  .global-container form textarea,
-  .global-container form select {
+  .global-container .form-group input,
+  .global-container .form-group textarea,
+  .global-container .form-group select {
     font-size: 14px;
     padding: 10px;
+  }
+
+  .global-container .form-group input[type="email"] {
+    padding-left: 32px;
+  }
+
+  .global-container .input-icon {
+    font-size: 14px;
   }
 
   .global-container .floating-left,

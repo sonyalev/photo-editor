@@ -2,6 +2,7 @@
 // frontend/src/components/Contact.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FaEnvelope, FaLinkedin } from 'react-icons/fa'; // Імпорт іконок
 import '../styles/Global.css';
 
 function Contact() {
@@ -51,10 +52,6 @@ function Contact() {
       <header>
         <nav>
           <ul>
-            <li><Link to="/about">Про проект</Link></li>
-            <li><Link to="/contact">Контакти</Link></li>
-            <li><Link to="/saved-images">Збережені зображення</Link></li>
-            <li><Link to="/messages">Повідомлення</Link></li>
           </ul>
         </nav>
         <button className="back-button" onClick={() => navigate(-1)}>
@@ -63,78 +60,105 @@ function Contact() {
       </header>
       <main>
         <h1>Контактна інформація</h1>
-        <section>
-          <img src="https://via.placeholder.com/150" alt="Contact icon" className="floating-left" />
-          <p>Зв'яжіться з нами за email: levchuk.sofia@lll.kpi.ua</p>
-          <p>Телефон: +380 985 291</p>
+        <section className="contact-info">
+          <div className="contact-details">
+            <p>
+              <FaEnvelope className="contact-icon" /> Зв'яжіться з нами:{' '}
+              <a href="mailto:levchuk.sofia@lll.kpi.ua">levchuk.sofia@lll.kpi.ua</a>
+            </p>
+            <p>Телефон: +380 985 291</p>
+            <p>
+              
+            </p>
+          </div>
         </section>
-        <section>
+        <section className="contact-form">
           <h2>Напишіть нам</h2>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="first_name">Ім'я</label>
-            <input
-              type="text"
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              placeholder="Ваше ім'я"
-              required
-            />
-            <label htmlFor="last_name">Прізвище</label>
-            <input
-              type="text"
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              placeholder="Ваше прізвище"
-              required
-            />
-            <label htmlFor="email">Електронна пошта</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Ваша пошта"
-              required
-            />
-            <label htmlFor="inquiry_type">Тип запиту</label>
-            <select
-              id="inquiry_type"
-              name="inquiry_type"
-              value={formData.inquiry_type}
-              onChange={handleChange}
-            >
-              <option value="support">Підтримка</option>
-              <option value="feedback">Відгук</option>
-              <option value="other">Інше</option>
-            </select>
-            <label htmlFor="message">Повідомлення</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Ваше повідомлення"
-              required
-            />
-            <button type="submit">Надіслати</button>
+            <div className="form-group">
+              <label htmlFor="first_name">Ім'я</label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                placeholder="Ваше ім'я"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="last_name">Прізвище</label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                placeholder="Ваше прізвище"
+                required
+              />
+            </div>
+            <div className="form-group form-group-icon">
+              <label htmlFor="email">Електронна пошта</label>
+              <div className="input-wrapper">
+                <FaEnvelope className="input-icon" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Ваша пошта"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="inquiry_type">Тип запиту</label>
+              <select
+                id="inquiry_type"
+                name="inquiry_type"
+                value={formData.inquiry_type}
+                onChange={handleChange}
+              >
+                <option value="support">Підтримка</option>
+                <option value="feedback">Відгук</option>
+                <option value="other">Інше</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="message">Повідомлення</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Ваше повідомлення"
+                required
+              />
+            </div>
+            <button type="submit" className="submit-button">
+              Надіслати
+            </button>
           </form>
-          {message && <p>{message}</p>}
+          {message && <p className="form-message">{message}</p>}
         </section>
-        <section>
-          <h2>Як нас знайти</h2>
+        <section className="how-to-find">
+          <h2></h2>
           <ol>
-            <li>Відкрийте наш сайт</li>
-            <li>Перейдіть до розділу контактів</li>
-            <li>Заповніть форму або зателефонуйте</li>
           </ol>
         </section>
-        <section>
-          <img src="https://via.placeholder.com/100" alt="Social media icon" />
+        <section className="social-links">
+          <h2>Ми в соціальних мережах</h2>
+          <a
+            href="https://www.linkedin.com/in/sofia-levchuk-98a4062a5/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+          >
+            <FaLinkedin className="social-icon" /> LinkedIn
+          </a>
         </section>
       </main>
       <footer>

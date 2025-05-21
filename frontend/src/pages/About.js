@@ -12,10 +12,6 @@ function About() {
       <header>
         <nav>
           <ul>
-            <li><Link to="/about">Про проект</Link></li>
-            <li><Link to="/contact">Контакти</Link></li>
-            <li><Link to="/saved-images">Збережені зображення</Link></li>
-            <li><Link to="/messages">Повідомлення</Link></li>
           </ul>
         </nav>
         <button className="back-button" onClick={() => navigate(-1)}>
