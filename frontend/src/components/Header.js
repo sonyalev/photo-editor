@@ -1,43 +1,29 @@
 // frontend/src/components/Header.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/Header.css';
 
-function Header({ isLoggedIn, onLogout }) {
+function Header() {
   return (
-    <header style={styles.header}>
-      <h1><Link to="/" style={styles.title}>ФотоРедактор</Link></h1>
-      <nav>
-        {isLoggedIn ? (
-          <>
-            <Link to="/editor"><button style={styles.button}>Редактор</button></Link>
-            <button onClick={onLogout} style={styles.button}>Вийти</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login"><button style={styles.button}>Увійти</button></Link>
-            <Link to="/register"><button style={styles.button}>Зареєструватись</button></Link>
-          </>
-        )}
-      </nav>
-    </header>
+    <div className="nav-container">
+      <div className="nav-left">
+        <Link to="/contact" className="nav-link">
+          Контактна інформація
+        </Link>
+        <Link to="/about" className="nav-link">
+          Про проект
+        </Link>
+      </div>
+      <div className="nav-right">
+        <Link to="/register" className="nav-button">
+          Зареєструватись
+        </Link>
+        <Link to="/login" className="nav-button">
+          Увійти
+        </Link>
+      </div>
+    </div>
   );
 }
-
-const styles = {
-  header: {
-    background: '#eee',
-    padding: '10px 20px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  button: {
-    marginLeft: '10px'
-  },
-  title: {
-    textDecoration: 'none',
-    color: 'black'
-  }
-};
 
 export default Header;

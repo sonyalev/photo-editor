@@ -36,7 +36,7 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Логін"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required

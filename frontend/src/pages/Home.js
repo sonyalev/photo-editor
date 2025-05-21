@@ -5,6 +5,8 @@ import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
 import FilterSelector from '../components/Editor/FilterSelector';
 import DownloadButton from '../components/DownloadButton';
+import '../styles/Home.css';
+import 'cropperjs/dist/cropper.css';
 
 const FILTERS = [
   { value: 'none', unit: '' },
@@ -37,19 +39,29 @@ function Home() {
   const [filter, setFilter] = useState('none');
   const [intensity, setIntensity] = useState(100);
   const [isCropping, setIsCropping] = useState(false);
+  const [showFilterSelector, setShowFilterSelector] = useState(false);
   const cropperRef = useRef(null);
 
   const handleImageChange = (e) => {
+    console.log('Home: handleImageChange triggered:', e.target.files);
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      const imageUrl = URL.createObjectURL(file);
+      console.log('Home: Image URL created:', imageUrl);
+      setImage(imageUrl);
       setIsCropping(false);
+      setShowFilterSelector(false);
+    } else {
+      console.log('Home: No file selected');
     }
   };
 
   const handleCrop = () => {
     const cropper = cropperRef.current?.cropper;
-    if (!cropper) return;
+    if (!cropper) {
+      console.error('Cropper not initialized');
+      return;
+    }
 
     const croppedCanvas = cropper.getCroppedCanvas();
     if (!croppedCanvas) {
@@ -57,41 +69,64 @@ function Home() {
       return;
     }
 
-    setImage(croppedCanvas.toDataURL('image/png'));
+    const croppedImage = croppedCanvas.toDataURL('image/png');
+    console.log('Home: Cropped image:', croppedImage);
+    setImage(croppedImage);
     setIsCropping(false);
   };
 
   const handleFilterChange = (filterValue) => {
+    console.log('Filter changed to:', filterValue);
     setFilter(filterValue);
   };
 
   const handleIntensityChange = (value) => {
+    console.log('Intensity changed to:', value);
     setIntensity(value);
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Головна: Редагування доступне для всіх</h2>
-
-      <ImageUploader onImageChange={handleImageChange} />
-
-      <FilterSelector
-        filter={filter}
-        intensity={intensity}
-        onFilterChange={handleFilterChange}
-        onIntensityChange={handleIntensityChange}
-      />
-
-      <div style={{ marginTop: 10 }}>
-        <button onClick={() => setIsCropping(!isCropping)}>
-          {isCropping ? 'Скасувати' : 'Обрізати зображення'}
-        </button>
+    <div className="home-container">
+      <div className="page-title">
+        <h1>Редактор фотографій</h1>
       </div>
+
+      <ImageUploader onImageChange={handleImageChange} buttonClass="button-85" />
 
       {image && (
         <>
-          {isCropping ? (
-            <div style={{ marginTop: 10 }}>
+          <div className="editor-controls">
+            <button
+              className="gradient-button"
+              onClick={() => {
+                console.log('Toggle filter selector:', !showFilterSelector);
+                setShowFilterSelector(!showFilterSelector);
+              }}
+            >
+              {showFilterSelector ? 'Сховати фільтри' : 'Фільтр'}
+            </button>
+            <button
+              className="gradient-button"
+              onClick={() => {
+                console.log('Toggle cropping:', !isCropping);
+                setIsCropping(!isCropping);
+              }}
+            >
+              {isCropping ? 'Скасувати' : 'Обрізати'}
+            </button>
+          </div>
+
+          {showFilterSelector && (
+            <FilterSelector
+              filter={filter}
+              intensity={intensity}
+              onFilterChange={handleFilterChange}
+              onIntensityChange={handleIntensityChange}
+            />
+          )}
+
+          {isCropping && (
+            <div style={{ marginTop: '20px', width: '100%', maxWidth: '800px' }}>
               <Cropper
                 src={image}
                 style={{ height: 400, width: '100%' }}
@@ -106,17 +141,22 @@ function Home() {
                 checkCrossOrigin={true}
                 ref={cropperRef}
               />
-              <button onClick={handleCrop} style={{ marginTop: 10 }}>
-                Застосувати обрізку
-              </button>
+              <div className="editor-controls" style={{ marginTop: '20px' }}>
+                <button className="gradient-button" onClick={handleCrop}>
+                  Застосувати
+                </button>
+              </div>
             </div>
-          ) : (
+          )}
+
+          {!isCropping && (
             <>
               <ImagePreview image={image} cssFilter={getCssFilter(filter, intensity)} />
               <DownloadButton
                 imageUrl={image}
                 cssFilter={getCssFilter(filter, intensity)}
                 filename="edited-image.png"
+                buttonClass="download-button"
               />
             </>
           )}

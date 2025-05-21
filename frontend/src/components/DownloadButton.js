@@ -1,12 +1,11 @@
 // frontebd/src/components/DownloadButton.js
 import React from 'react';
 
-function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image.png' }) {
+function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image.png', buttonClass }) {
   const handleDownload = async () => {
     try {
-      // Створюємо зображення
       const img = new Image();
-      img.crossOrigin = 'anonymous'; // Для уникнення проблем з CORS
+      img.crossOrigin = 'anonymous';
       img.src = imageUrl;
 
       await new Promise((resolve, reject) => {
@@ -14,17 +13,14 @@ function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image
         img.onerror = () => reject(new Error('Не вдалося завантажити зображення'));
       });
 
-      // Створюємо canvas для рендерингу зображення з фільтрами
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
 
-      // Застосовуємо CSS-фільтр
       ctx.filter = cssFilter;
       ctx.drawImage(img, 0, 0);
 
-      // Отримуємо Blob з canvas
       canvas.toBlob(
         (blob) => {
           if (!blob) {
@@ -33,7 +29,6 @@ function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image
             return;
           }
 
-          // Створюємо тимчасовий URL для завантаження
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -42,11 +37,10 @@ function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image
           a.click();
           a.remove();
 
-          // Звільняємо пам’ять
           window.URL.revokeObjectURL(url);
         },
-        'image/png', // Вказуємо формат
-        1 // Якість (1 = максимальна)
+        'image/png',
+        1
       );
     } catch (error) {
       console.error('Помилка при завантаженні:', error);
@@ -54,7 +48,13 @@ function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image
     }
   };
 
-  return <button onClick={handleDownload}>Завантажити</button>;
+  return (
+    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <button className={buttonClass} onClick={handleDownload}>
+        Завантажити
+      </button>
+    </div>
+  );
 }
 
 export default DownloadButton;

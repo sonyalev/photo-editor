@@ -1,0 +1,77 @@
+/* frontend/src/styles/Global.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
+  --font-family: 'Roboto', sans-serif;
+  --transition: all 0.3s ease;
+}
+
+html[data-theme="light"] {
+  --primary-color: #007bff; /* Синій для Home */
+  --secondary-color: #6c757d; /* Сірий */
+  --background-color: #f8f9fa; /* Світлий фон */
+  --text-color: #333; /* Темний текст */
+  --button-bg: #007bff;
+  --button-text: #fff;
+}
+
+html[data-theme="dark"] {
+  --primary-color: #1e90ff; /* Яскравіший синій для темного режиму */
+  --secondary-color: #adb5bd; /* Світліший сірий */
+  --background-color: #212529; /* Темний фон */
+  --text-color: #e9ecef; /* Світлий текст */
+  --button-bg: #1e90ff;
+  --button-text: #fff;
+}
+
+html[data-theme="light"][data-user="logged-in"] {
+  --primary-color: #28a745; /* Зелений для EditorLoggedIn */
+  --button-bg: #28a745;
+}
+
+html[data-theme="dark"][data-user="logged-in"] {
+  --primary-color: #2ecc71; /* Світліший зелений для темного режиму */
+  --button-bg: #2ecc71;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}

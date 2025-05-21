@@ -10,6 +10,9 @@ import Login from './pages/Login';
 import EditorLoggedIn from './pages/EditorLoggedIn';
 import SavedImagesPage from './pages/SavedImagesPage';
 import EditorPage from './pages/EditorPage';
+import Contact from './pages/Contact';
+import About from './pages/About';
+import './styles/Global.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,6 +34,8 @@ function App() {
         {/* Редактор для редагування конкретного фото */}
         <Route path="/edit-image/:imageId" element={<EditorPage />} />
         <Route path="/profile" element={<Profile userId={1} />} /> {/* userId треба отримувати динамічно */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

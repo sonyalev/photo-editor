@@ -1,0 +1,60 @@
+/* Селектор класу */
+.editor-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Селектор ідентифікатора */
+#editor-title {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+/* Псевдоелемент */
+.editor-section::before {
+  content: "Edit Your Images";
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Псевдоклас */
+.editor-section button:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Комбінатор (дочірній) */
+.editor-section > h2 {
+  margin-bottom: 1rem;
+}
+
+/* Селектор з атрибутом */
+select[name="filter"] {
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+/* Box model */
+.editor-section {
+  box-sizing: border-box;
+}
+
+/* Плаваючі елементи */
+.floating-toolbar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: var(--primary-color);
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .editor-section {
+    padding: 1rem;
+  }
+}

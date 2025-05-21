@@ -1,5 +1,6 @@
 // frontebd/src/components/FilterSelector.js
-import React, { useState } from 'react';
+import React from 'react';
+import '../../styles/Home.css';
 
 const FILTERS = [
   { name: 'Без фільтру', value: 'none', unit: '' },
@@ -15,65 +16,38 @@ const FILTERS = [
 ];
 
 function FilterSelector({ filter, intensity, onFilterChange, onIntensityChange }) {
-  const [showFilters, setShowFilters] = useState(false);
-
-  // Кнопка "Фільтр" відкриває список
-  const toggleFilters = () => setShowFilters(!showFilters);
-
-  // Формуємо CSS filter рядок, наприклад: "sepia(50%)"
-  const getCssFilter = () => {
-    if (filter === 'none') return 'none';
-    const f = FILTERS.find(f => f.value === filter);
-    if (!f) return 'none';
-
-    let val = intensity;
-    if (f.unit === 'deg') val = intensity * 3.6; // 0-100% -> 0-360deg
-    else if (f.unit === 'px') val = (intensity / 100) * 10; // наприклад до 10px розмиття
-
-    return `${filter}(${val}${f.unit})`;
-  };
-
   return (
-    <div>
-      <button onClick={toggleFilters}>Фільтр</button>
-
-      {showFilters && (
-        <div style={{ marginTop: 10 }}>
-          {FILTERS.map(f => (
-            <button
-              key={f.value}
-              style={{
-                marginRight: 5,
-                fontWeight: filter === f.value ? 'bold' : 'normal',
-              }}
-              onClick={() => onFilterChange(f.value)}
-            >
-              {f.name}
-            </button>
-          ))}
-        </div>
-      )}
+    <div className="filter-selector" style={{ marginTop: '20px', textAlign: 'center' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            className="filter-button"
+            onClick={() => onFilterChange(f.value)}
+            style={{
+              fontWeight: filter === f.value ? 'bold' : 'normal',
+            }}
+          >
+            {f.name}
+          </button>
+        ))}
+      </div>
 
       {filter !== 'none' && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: '20px' }}>
           <label>Інтенсивність: {intensity}%</label>
           <input
             type="range"
             min="0"
             max="100"
             value={intensity}
-            onChange={e => onIntensityChange(Number(e.target.value))}
+            onChange={(e) => onIntensityChange(Number(e.target.value))}
+            style={{ width: '100%', maxWidth: '300px' }}
           />
         </div>
       )}
-
-      {/* Показуємо активний CSS-фільтр для наочного контролю */}
-      <div style={{ marginTop: 10, fontStyle: 'italic' }}>
-       {/* Поточний фільтр: {getCssFilter()} */}
-      </div>
     </div>
   );
 }
 
 export default FilterSelector;
-

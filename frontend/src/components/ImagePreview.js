@@ -4,7 +4,7 @@ import React from 'react';
 function ImagePreview({ image, cssFilter }) {
   return (
     <div>
-      <h2>Попередній перегляд:</h2>
+      <h2></h2>
       <img 
         src={image} 
         alt="Uploaded preview" 

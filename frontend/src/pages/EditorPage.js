@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/EditorPage.css';
 
 function EditorPage() {
   const [imageSrc, setImageSrc] = useState(null);
