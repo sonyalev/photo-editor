@@ -1,7 +1,8 @@
 // frontend/src/pages/Login.js
+// frontend/src/pages/Login.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Login.css';
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/Auth.css';
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -28,14 +29,29 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div>
-      <h2>Вхід</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} required />
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Вхід</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Увійти</button>
+        <p className="auth-message">{message}</p>
+        <p className="auth-message">
+          Немає акаунта? <Link to="/register">Зареєструватися</Link>
+        </p>
       </form>
-      <p>{message}</p>
     </div>
   );
 }

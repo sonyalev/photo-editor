@@ -1,7 +1,8 @@
 // frontend/src/components/Register.js
+// frontend/src/components/Register.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Імпортуємо useNavigate для перенаправлення
-
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/Auth.css';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -24,18 +25,17 @@ function Register() {
     setMessage(data.message || 'Щось пішло не так');
 
     if (data.message === 'Користувач зареєстрований') {
-      // Після успішної реєстрації перенаправляємо на сторінку редактора
       localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/editor');
     }
   };
 
   return (
-    <div>
-      <h2>Реєстрація</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Реєстрація</h2>
         <input
-          type="text"
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -49,8 +49,11 @@ function Register() {
           required
         />
         <button type="submit">Зареєструватися</button>
+        <p className="auth-message">{message}</p>
+        <p className="auth-message">
+          Вже маєте акаунт? <Link to="/login">Увійти</Link>
+        </p>
       </form>
-      <p>{message}</p>
     </div>
   );
 }
