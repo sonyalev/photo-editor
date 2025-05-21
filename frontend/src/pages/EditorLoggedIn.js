@@ -136,16 +136,29 @@ function EditorLoggedIn() {
     };
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
   return (
     <div className="editor-logged-in-container">
       <div className="header">
         <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
-        <button
-          className="saved-images-button"
-          onClick={() => navigate('/saved-images')}
-        >
-          Переглянути збережені фото
-        </button>
+        <div className="header-buttons">
+          <button
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            Вийти
+          </button>
+          <button
+            className="saved-images-button"
+            onClick={() => navigate('/saved-images')}
+          >
+            Переглянути збережені фото
+          </button>
+        </div>
       </div>
 
       <ImageUploader onImageChange={handleImageChange} buttonClass="button-85" />
@@ -229,4 +242,3 @@ function EditorLoggedIn() {
 }
 
 export default EditorLoggedIn;
-

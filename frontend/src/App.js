@@ -14,6 +14,7 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import './styles/Global.css';
 
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
