@@ -30,18 +30,29 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 // === Routes ===
 const authRoutes = require('./routes/auth');
 const imageRoutes = require('./routes/images');
+const contactRoutes = require('./routes/contacts');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/images', imageRoutes);
-
+app.use('/api/contact', contactRoutes);
 
 // === Статичні файли ===
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// === Обробка помилок 404 ===
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Ендпоінт не знайдено' });
+});
+
+// === Обробка помилок сервера ===
+app.use((err, req, res, next) => {
+  console.error('Помилка сервера:', err);
+  res.status(500).json({ message: 'Помилка сервера' });
+});
 
 // === Запуск сервера ===
 server.listen(PORT, () => {
   console.log(`✅ Сервер запущено на http://localhost:${PORT}`);
 });
-
 
 
