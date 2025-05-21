@@ -1,0 +1,137 @@
+/* frontend/src/styles/EditorLoggedIn.css (або SavedImages.css) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.saved-images-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+  background: #f0f8ff;
+  font-family: 'Inter', sans-serif;
+}
+
+.saved-images-header {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-images-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.image-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.image-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor-container h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.editor-canvas {
+  max-width: 100%; /* Адаптивна ширина */
+  max-height: 600px; /* Обмеження висоти */
+  width: auto;
+  height: auto;
+}
+
+.custom-button {
+  background: #bed5fb;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  min-width: 100px;
+  padding: 8px 16px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.custom-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .saved-images-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .saved-images-header h2 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .image-card {
+    padding: 8px;
+  }
+
+  .image-card img {
+    max-width: 150px;
+  }
+
+  .editor-canvas {
+    max-height: 400px; /* Менша висота на мобільних */
+  }
+
+  .custom-button {
+    font-size: 14px;
+    min-width: 80px;
+    padding: 6px 12px;
+  }
+}

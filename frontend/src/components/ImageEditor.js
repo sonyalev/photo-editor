@@ -1,7 +1,9 @@
 // frontend/src/components/ImageEditor.js
+// frontend/src/components/ImageEditor.js
 import React, { useRef, useState, useEffect } from 'react';
 import Cropper from 'react-cropper';
-import FilterSelector from './Editor/FilterSelector'; 
+import FilterSelector from './Editor/FilterSelector';
+import '../styles/SavedImages.css';
 
 function ImageEditor({ image, onSave, onSaveNew, onClose }) {
   const canvasRef = useRef(null);
@@ -13,7 +15,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
   const [isCropping, setIsCropping] = useState(false);
   const [cropData, setCropData] = useState(null);
 
-  // Завантажуємо зображення у canvas при зміні image, filter або intensity
   useEffect(() => {
     if (!image) return;
     const img = new Image();
@@ -22,11 +23,21 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     img.onload = () => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
+
+      // Обмежуємо максимальну ширину до 800px
+      const maxWidth = 800;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > maxWidth) {
+        height = (maxWidth / width) * height;
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Обчислити CSS-фільтр з інтенсивністю
       let filterValue = 'none';
       if (filter !== 'none') {
         if (filter === 'hue-rotate') {
@@ -39,12 +50,11 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       }
 
       ctx.filter = filterValue;
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, width, height);
       setImageSrc(canvas.toDataURL());
     };
   }, [image, filter, intensity]);
 
-  // Обробка обрізки
   const handleCrop = () => {
     const cropper = cropperRef.current?.cropper;
     if (!cropper) return;
@@ -55,12 +65,10 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       return;
     }
 
-    // Зберігаємо обрізане зображення у вигляді Data URL
     const croppedImage = croppedCanvas.toDataURL('image/png');
     setCropData(croppedImage);
     setIsCropping(false);
 
-    // Оновлюємо canvas з обрізаним зображенням
     const img = new Image();
     img.src = croppedImage;
     img.onload = () => {
@@ -74,7 +82,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     };
   };
 
-  // Обчислення CSS-фільтру
   const getCssFilter = (filter, intensity) => {
     if (filter === 'none') return 'none';
     if (filter === 'hue-rotate') {
@@ -85,7 +92,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     return `${filter}(${intensity}%)`;
   };
 
-  // Логіка оновлення: видалити старе, потім створити нове
   const handleReplaceImage = async () => {
     setIsLoading(true);
     const canvas = canvasRef.current;
@@ -98,13 +104,11 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       }
 
       try {
-        // Видалити старе зображення
         let res = await fetch(`http://localhost:5000/api/images/${image.id}`, {
           method: 'DELETE',
         });
         if (!res.ok) throw new Error('Не вдалося видалити старе зображення');
 
-        // Зберегти нове
         const formData = new FormData();
         formData.append('image', blob, 'edited-image.png');
         formData.append('userId', image.user_id);
@@ -127,7 +131,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     }, 'image/png');
   };
 
-  // Зберегти як нове (без видалення)
   const handleSaveNew = async () => {
     setIsLoading(true);
     const canvas = canvasRef.current;
@@ -161,7 +164,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
     }, 'image/png');
   };
 
-  // Видалити зображення
   const handleDelete = async () => {
     if (!window.confirm('Ви впевнені, що хочете видалити це зображення?')) return;
 
@@ -190,7 +192,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
   if (!image) return <div>Оберіть зображення для редагування</div>;
 
   return (
-    <div>
+    <div className="editor-container">
       <h3>Редагування зображення</h3>
 
       <FilterSelector
@@ -200,8 +202,8 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
         onIntensityChange={setIntensity}
       />
 
-      <div style={{ marginTop: 10 }}>
-        <button onClick={() => setIsCropping(!isCropping)} disabled={isLoading}>
+      <div className="editor-actions">
+        <button className="custom-button" onClick={() => setIsCropping(!isCropping)} disabled={isLoading}>
           {isCropping ? 'Скасувати' : 'Обрізати зображення'}
         </button>
       </div>
@@ -222,13 +224,14 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
             checkCrossOrigin={true}
             ref={cropperRef}
           />
-          <button onClick={handleCrop} style={{ marginTop: 10 }} disabled={isLoading}>
+          <button className="custom-button" onClick={handleCrop} style={{ marginTop: 10 }} disabled={isLoading}>
             Застосувати обрізку
           </button>
         </div>
       ) : (
         <canvas
           ref={canvasRef}
+          className="editor-canvas"
           style={{
             border: '1px solid #000',
             cursor: 'crosshair',
@@ -237,17 +240,17 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
         />
       )}
 
-      <div style={{ marginTop: 10 }}>
-        <button onClick={handleReplaceImage} disabled={isLoading}>
+      <div className="editor-actions">
+        <button className="custom-button" onClick={handleReplaceImage} disabled={isLoading}>
           Замінити
         </button>
-        <button onClick={handleSaveNew} disabled={isLoading}>
+        <button className="custom-button" onClick={handleSaveNew} disabled={isLoading}>
           Зберегти як нове
         </button>
-        <button onClick={handleDelete} disabled={isLoading}>
+        <button className="custom-button" onClick={handleDelete} disabled={isLoading}>
           Видалити зображення
         </button>
-        <button onClick={onClose} disabled={isLoading}>
+        <button className="custom-button" onClick={onClose} disabled={isLoading}>
           Відмінити
         </button>
       </div>

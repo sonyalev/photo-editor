@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ImageEditor from './ImageEditor';
 import DownloadButton from './DownloadButton';
+import '../styles/SavedImages.css'; 
 
 function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
@@ -34,7 +35,7 @@ function SavedImages({ userId }) {
 
   return (
     <div>
-      <h2>Ваші збережені фото</h2>
+      <h2></h2>
       {editingImage ? (
         <ImageEditor
           image={editingImage}
@@ -47,10 +48,14 @@ function SavedImages({ userId }) {
           {images.map((img) => (
             <div key={img.id} style={{ border: '1px solid #ccc', padding: '10px' }}>
               <img src={img.url} alt="saved" width={200} />
-              <div style={{ marginTop: '10px' }}>
-                <button onClick={() => window.open(img.url, '_blank')}>Переглянути</button>
-                <DownloadButton imageUrl={img.url} />
-                <button onClick={() => setEditingImage(img)}>Редагувати</button>
+              <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
+                <button className="custom-button" onClick={() => window.open(img.url, '_blank')}>
+                  <span>Переглянути</span>
+                </button>
+                <DownloadButton imageUrl={img.url} buttonClass="custom-button" />
+                <button className="custom-button" onClick={() => setEditingImage(img)}>
+                  <span>Редагувати</span>
+                </button>
               </div>
             </div>
           ))}
@@ -61,6 +66,4 @@ function SavedImages({ userId }) {
 }
 
 export default SavedImages;
-
-
 
