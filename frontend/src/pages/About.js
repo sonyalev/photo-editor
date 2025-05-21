@@ -1,8 +1,11 @@
 // frontend/src/components/About.js
-// frontend/src/components/About.js
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FaPaintBrush, FaCloudUploadAlt, FaUsers, FaImage } from 'react-icons/fa';
 import '../styles/Global.css';
+import sepiaImage from '../assets/images/sepia.png'; // Імпорт зображень
+import cropImage from '../assets/images/crop.png';
+import vividImage from '../assets/images/vivid.png';
 
 function About() {
   const navigate = useNavigate();
@@ -20,20 +23,36 @@ function About() {
       </header>
       <main>
         <h1>Про проект</h1>
-        <section>
-          <p>Це редактор фотографій, створений для легкого редагування зображень.</p>
-          <img src="https://via.placeholder.com/150" alt="Editor preview" className="floating-left" />
-          <p>Наш редактор дозволяє застосовувати фільтри, обрізати зображення та зберігати результати.</p>
+        <section className="about-intro">
+          <p>
+            Наш редактор фотографій створений для того, щоб зробити редагування зображень простим і
+            доступним для всіх. Незалежно від вашого рівня підготовки, ви можете легко застосовувати
+            фільтри, обрізати зображення, регулювати кольори та зберігати результати в хмарі.
+          </p>
+          <button
+            className="try-editor-button"
+            onClick={() => navigate('/editor')}
+          >
+            Спробувати редактор
+          </button>
         </section>
-        <section>
+        <section className="features">
           <h2>Особливості</h2>
           <ul>
-            <li>Інтуїтивний інтерфейс</li>
-            <li>Широкий вибір фільтрів</li>
-            <li>Збереження в хмарі</li>
+            <li>
+              <FaPaintBrush className="feature-icon" /> Інтуїтивний інтерфейс для швидкого
+              редагування
+            </li>
+            <li>
+              <FaImage className="feature-icon" /> Можливість вибирати фільтри та ефекти
+            </li>
+            <li>
+              <FaCloudUploadAlt className="feature-icon" /> Збереження в хмарі для доступу з
+              будь-якого пристрою
+            </li>
           </ul>
         </section>
-        <section>
+        <section className="statistics">
           <h2>Статистика проєкту</h2>
           <table>
             <thead>
@@ -45,34 +64,41 @@ function About() {
             <tbody>
               <tr>
                 <td>Кількість користувачів</td>
-                <td>500+</td>
+                <td>10+</td>
               </tr>
               <tr>
                 <td>Зображень оброблено</td>
-                <td>10,000+</td>
+                <td>100+</td>
               </tr>
               <tr>
                 <td>Дата запуску</td>
-                <td>2025</td>
+                <td>травень 2025</td>
               </tr>
             </tbody>
           </table>
         </section>
-        <section>
+        <section className="gallery">
           <h2>Галерея</h2>
-          <div className="image-map-container">
-            <img
-              src="https://via.placeholder.com/400x200"
-              alt="Sample image"
-              useMap="#image-map"
-              className="floating-right"
-            />
-            <map name="image-map">
-              <area shape="rect" coords="0,0,200,100" href="/saved-images" alt="Go to Saved Images" />
-              <area shape="rect" coords="200,100,400,200" href="/contact" alt="Go to Contact" />
-            </map>
-            <img src="https://via.placeholder.com/100" alt="Icon" className="floating-fixed" />
+          <div className="gallery-grid">
+            <div className="gallery-item">
+              <img src={sepiaImage} alt="Sepia filter" />
+              <p>Фільтр "Сепія"</p>
+            </div>
+            <div className="gallery-item">
+              <img src={cropImage} alt="Cropped image" />
+              <p>Обрізка зображення</p>
+            </div>
+            <div className="gallery-item">
+              <img src={vividImage} alt="Vivid colors" />
+              <p>Яскраві кольори</p>
+            </div>
           </div>
+        </section>
+        <section className="team">
+          <h2>Розробник Левчук Софія</h2>
+          <p>
+          
+          </p>
         </section>
       </main>
       <footer>
