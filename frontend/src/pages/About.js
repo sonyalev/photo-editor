@@ -1,7 +1,7 @@
 // frontend/src/components/About.js
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaPaintBrush, FaCloudUploadAlt, FaUsers, FaImage } from 'react-icons/fa';
+import { FaPaintBrush, FaCloudUploadAlt, FaUsers, FaImage, FaEdit, FaLinkedin } from 'react-icons/fa';
 import '../styles/Global.css';
 import sepiaImage from '../assets/images/sepia.png'; // Імпорт зображень
 import cropImage from '../assets/images/crop.png';
@@ -33,6 +33,8 @@ function About() {
             className="try-editor-button"
             onClick={() => navigate('/editor')}
           >
+            <FaEdit className="button-icon" />
+            
             Спробувати редактор
           </button>
         </section>

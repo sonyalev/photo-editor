@@ -339,6 +339,48 @@
   color: #666666;
 }
 
+
+.global-container .try-editor-button {
+  background: #007bff; /* Яскравіший синій для акценту */
+  border: none;
+  border-radius: 10px;
+  color: #ffffff; /* Білий текст для контрасту */
+  font-family: 'Inter', sans-serif;
+  font-size: 18px; /* Збільшений шрифт */
+  font-weight: 500;
+  padding: 12px 24px; /* Більші падінги */
+  cursor: pointer;
+  margin: 20px auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Відступ між іконкою і текстом */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Легка тінь */
+  transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+}
+
+.global-container .try-editor-button:hover {
+  background: #0056b3; /* Темніший синій при наведенні */
+  transform: scale(1.1); /* Збільшення при наведенні */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Посилена тінь */
+}
+
+.global-container .try-editor-button .button-icon {
+  font-size: 20px; /* Розмір іконки */
+  color: #ffffff; /* Білий колір іконки */
+}
+
+@media (max-width: 768px) {
+  .global-container .try-editor-button {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .global-container .try-editor-button .button-icon {
+    font-size: 18px;
+  }
+}
+
 @media (max-width: 768px) {
   .global-container {
     padding: 15px;
