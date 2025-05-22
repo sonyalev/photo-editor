@@ -209,7 +209,21 @@
   margin-top: 10px;
 }
 
-.global-container .back-button,
+.global-container .back-button {
+  background: #bed5fb;
+  border: none;
+  border-radius: 10px;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
 .global-container .submit-button {
   background: #bed5fb;
   border: none;
@@ -233,7 +247,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.global-container .back-button:disabled,
+.global-container .back-button-container {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  margin-left: 20px; /* Додає відступ зліва */
+}
+
 .global-container .submit-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
