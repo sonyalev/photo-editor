@@ -11,7 +11,7 @@ function Profile({ userId }) {
     formData.append('image', e.target.files[0]);
     formData.append('userId', userId);
 
-    await fetch('http://localhost:5000/api/images/upload', {
+    await fetch(`${process.env.REACT_APP_API_URL}/api/images/upload`, {
       method: 'POST',
       body: formData,
     });

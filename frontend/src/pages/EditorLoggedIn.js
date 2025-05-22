@@ -116,7 +116,7 @@ function EditorLoggedIn() {
         formData.append('userId', userId);
 
         try {
-          const res = await fetch('http://localhost:5000/api/images/upload', {
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/upload`, {
             method: 'POST',
             body: formData,
           });

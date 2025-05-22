@@ -8,10 +8,13 @@ function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
   const [editingImage, setEditingImage] = useState(null);
 
+  console.log('API URL:', process.env.REACT_APP_API_URL);
+
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/images/user/${userId}`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/user/${userId}`);
         const data = await res.json();
         setImages(data.images);
       } catch (err) {

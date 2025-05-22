@@ -104,7 +104,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       }
 
       try {
-        let res = await fetch(`http://localhost:5000/api/images/${image.id}`, {
+        let res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/${image.id}`, {
           method: 'DELETE',
         });
         if (!res.ok) throw new Error('Не вдалося видалити старе зображення');
@@ -113,7 +113,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
         formData.append('image', blob, 'edited-image.png');
         formData.append('userId', image.user_id);
 
-        res = await fetch('http://localhost:5000/api/images/upload', {
+        res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -147,7 +147,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       formData.append('userId', image.user_id);
 
       try {
-        const res = await fetch('http://localhost:5000/api/images/upload', {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -169,7 +169,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/images/${image.id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/${image.id}`, {
         method: 'DELETE',
       });
 
