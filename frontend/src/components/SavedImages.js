@@ -8,7 +8,6 @@ function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
   const [editingImage, setEditingImage] = useState(null);
 
-  console.log('API URL:', process.env.REACT_APP_API_URL);
 
 
   useEffect(() => {

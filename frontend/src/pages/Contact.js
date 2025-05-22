@@ -66,7 +66,7 @@ function Contact() {
               <FaEnvelope className="contact-icon" /> Зв'яжіться з нами:{' '}
               <a href="mailto:levchuk.sofia@lll.kpi.ua">levchuk.sofia@lll.kpi.ua</a>
             </p>
-            <p>Телефон: +380 985 291</p>
+            <p>Телефон: +380 985 291 896</p>
             <p>
               
             </p>
