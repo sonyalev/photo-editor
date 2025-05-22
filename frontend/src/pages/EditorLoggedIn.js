@@ -144,7 +144,7 @@ function EditorLoggedIn() {
   return (
     <div className="editor-logged-in-container">
       <div className="header">
-        <h2>Привіт! Ви увійшли. Це ваша особиста сторінка редактора</h2>
+        <h2>Вітаємо в особистій сторінці!</h2>
         <button className="button-logout" onClick={handleLogout}>
           <span className="text">Вийти</span>
         </button>
