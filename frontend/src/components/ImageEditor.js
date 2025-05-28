@@ -1,6 +1,7 @@
 // frontend/src/components/ImageEditor.js
 // frontend/src/components/ImageEditor.js
 import React, { useRef, useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // Імпорт toast
 import Cropper from 'react-cropper';
 import FilterSelector from './Editor/FilterSelector';
 import '../styles/SavedImages.css';
@@ -61,7 +62,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
     const croppedCanvas = cropper.getCroppedCanvas();
     if (!croppedCanvas) {
-      alert('Помилка при обрізанні зображення');
+      toast.error('Помилка при обрізанні зображення');
       return;
     }
 
@@ -80,6 +81,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       ctx.drawImage(img, 0, 0);
       setImageSrc(croppedImage);
     };
+    toast.success('Обрізку застосовано!');
   };
 
   const getCssFilter = (filter, intensity) => {
@@ -98,7 +100,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
     canvas.toBlob(async (blob) => {
       if (!blob) {
-        alert('Помилка при отриманні файлу з canvas');
+        toast.error('Помилка при отриманні файлу з canvas');
         setIsLoading(false);
         return;
       }
@@ -122,9 +124,9 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
         const newImage = await res.json();
         onSaveNew(newImage.image);
-        alert('Зображення оновлено (видалення + додавання)!');
+        toast.success('Зображення успішно замінено!');
       } catch (err) {
-        alert('Помилка: ' + err.message);
+        toast.error('Помилка: ' + err.message);
       }
 
       setIsLoading(false);
@@ -137,7 +139,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
     canvas.toBlob(async (blob) => {
       if (!blob) {
-        alert('Помилка при отриманні файлу з canvas');
+        toast.error('Помилка при отриманні файлу з canvas');
         setIsLoading(false);
         return;
       }
@@ -156,9 +158,9 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
         const newImage = await res.json();
         onSaveNew(newImage.image);
-        alert('Нове зображення збережено!');
+        toast.success('Нове зображення збережено!');
       } catch (err) {
-        alert('Помилка при збереженні: ' + err.message);
+        toast.error('Помилка при збереженні: ' + err.message);
       }
       setIsLoading(false);
     }, 'image/png');
@@ -175,10 +177,10 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
 
       if (!res.ok) throw new Error('Не вдалося видалити зображення');
 
-      alert('Зображення видалено');
+      toast.success('Зображення видалено!');
       onClose();
     } catch (err) {
-      alert('Помилка: ' + err.message);
+      toast.error('Помилка: ' + err.message);
     }
     setIsLoading(false);
   };
@@ -246,9 +248,6 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
         </button>
         <button className="custom-button" onClick={handleSaveNew} disabled={isLoading}>
           Зберегти як нове
-        </button>
-        <button className="custom-button" onClick={handleDelete} disabled={isLoading}>
-          Видалити зображення
         </button>
         <button className="custom-button" onClick={onClose} disabled={isLoading}>
           Відмінити

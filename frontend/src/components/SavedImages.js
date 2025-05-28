@@ -1,14 +1,17 @@
 // frontend/src/components/SavedImages.js
+// frontend/src/components/SavedImages.js
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ImageEditor from './ImageEditor';
 import DownloadButton from './DownloadButton';
-import '../styles/SavedImages.css'; 
+import ConfirmModal from './ConfirmModal';
+import '../styles/SavedImages.css';
 
 function SavedImages({ userId }) {
   const [images, setImages] = useState([]);
   const [editingImage, setEditingImage] = useState(null);
-
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -18,6 +21,7 @@ function SavedImages({ userId }) {
         setImages(data.images);
       } catch (err) {
         console.error('Помилка при завантаженні зображень:', err);
+        toast.error('Помилка при завантаженні зображень');
       }
     };
     if (userId) fetchImages();
@@ -28,11 +32,37 @@ function SavedImages({ userId }) {
       imgs.map((img) => (img.id === updatedImage.id ? updatedImage : img))
     );
     setEditingImage(null);
+    // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
   };
 
   const handleSaveNew = (newImage) => {
     setImages((imgs) => [newImage, ...imgs]);
     setEditingImage(null);
+    // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
+  };
+
+  const handleDelete = async (imageId) => {
+    setImageToDelete(imageId);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/images/${imageToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Не вдалося видалити зображення');
+
+      // Оновлюємо список зображень
+      setImages((imgs) => imgs.filter((img) => img.id !== imageToDelete));
+      // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
+    } catch (err) {
+      toast.error('Помилка: ' + err.message);
+    } finally {
+      setIsModalOpen(false);
+      setImageToDelete(null);
+    }
   };
 
   return (
@@ -58,11 +88,20 @@ function SavedImages({ userId }) {
                 <button className="custom-button" onClick={() => setEditingImage(img)}>
                   <span>Редагувати</span>
                 </button>
+                <button className="custom-button" onClick={() => handleDelete(img.id)}>
+                  <span>Видалити</span>
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        onConfirm={confirmDelete}
+        message="Ви впевнені, що хочете видалити це зображення?"
+      />
     </div>
   );
 }
