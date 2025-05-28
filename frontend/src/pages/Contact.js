@@ -1,5 +1,4 @@
 // frontend/src/components/Contact.js
-// frontend/src/components/Contact.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaEnvelope, FaLinkedin } from 'react-icons/fa'; // Імпорт іконок

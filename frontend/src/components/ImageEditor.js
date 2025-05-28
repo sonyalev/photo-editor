@@ -1,5 +1,4 @@
 // frontend/src/components/ImageEditor.js
-// frontend/src/components/ImageEditor.js
 import React, { useRef, useState, useEffect } from 'react';
 import { toast } from 'react-toastify'; // Імпорт toast
 import Cropper from 'react-cropper';
