@@ -90,14 +90,25 @@
   color: #000000;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  min-width: 100px;
-  padding: 8px 16px;
+  font-weight: 500;
+  width: 120px;
+  padding: 4px 16px; /* Зменшено вертикальний padding для однакової висоти */
   text-decoration: none;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.3s;
+  height: 32px; /* Фіксована висота для всіх кнопок */
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .custom-button:disabled {

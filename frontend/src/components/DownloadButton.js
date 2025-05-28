@@ -49,12 +49,10 @@ function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image
   };
 
   return (
-    <div style={{ marginTop: '20px', textAlign: 'center' }}>
-      <button className={buttonClass} onClick={handleDownload}>
-        Завантажити
-      </button>
-    </div>
-  );
+  <button className={buttonClass} onClick={handleDownload}>
+    Завантажити
+  </button>
+);
 }
 
 export default DownloadButton;
