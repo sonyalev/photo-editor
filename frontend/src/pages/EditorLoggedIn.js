@@ -1,6 +1,8 @@
 // frontend/src/pages/EditorLoggedIn.js
+// frontend/src/pages/EditorLoggedIn.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Імпорт toast
 import Cropper from 'react-cropper';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
@@ -77,7 +79,7 @@ function EditorLoggedIn() {
 
     const croppedCanvas = cropper.getCroppedCanvas();
     if (!croppedCanvas) {
-      alert('Помилка при обрізанні зображення');
+      toast.error('Помилка при обрізанні зображення');
       return;
     }
 
@@ -122,14 +124,12 @@ function EditorLoggedIn() {
           });
 
           if (res.ok) {
-            alert('Фото успішно збережено!');
-            setImageURL(null);
-            setImageFile(null);
+            toast.success('Фото успішно збережено!'); // Сповіщення про успіх
           } else {
-            alert('Помилка збереження фото');
+            toast.error('Помилка збереження фото');
           }
         } catch (err) {
-          alert('Помилка сервера');
+          toast.error('Помилка сервера');
           console.error(err);
         }
       }, 'image/png');

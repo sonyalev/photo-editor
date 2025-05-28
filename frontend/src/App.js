@@ -13,6 +13,9 @@ import EditorPage from './pages/EditorPage';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import './styles/Global.css';
+import { ToastContainer } from 'react-toastify'; // Імпорт ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Імпорт стилів для react-toastify
+
 
 
 function App() {
@@ -34,10 +37,22 @@ function App() {
         <Route path="/saved-images" element={<SavedImagesPage />} />
         {/* Редактор для редагування конкретного фото */}
         <Route path="/edit-image/:imageId" element={<EditorPage />} />
-        <Route path="/profile" element={<Profile userId={1} />} /> {/* userId треба отримувати динамічно */}
+        <Route path="/profile" element={<Profile userId={1} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </Router>
   );
 }
