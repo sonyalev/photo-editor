@@ -97,7 +97,7 @@ function About() {
           </div>
         </section>
         <section className="team">
-          <h2>Розробник Левчук Софія</h2>
+          <h2></h2>
           <p>
           
           </p>

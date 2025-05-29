@@ -15,7 +15,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
   const [isCropping, setIsCropping] = useState(false);
   const [cropData, setCropData] = useState(null);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!image) return;
     const img = new Image();
     img.crossOrigin = 'anonymous';

@@ -1,9 +1,9 @@
 // frontend/src/components/ConfirmModal.js
 import React from 'react';
 import Modal from 'react-modal';
-import '../styles/Global.css'; // Імпортуємо глобальні стилі
+import '../styles/Global.css'; 
 
-// Прив’язуємо react-modal до кореня програми для доступності
+
 Modal.setAppElement('#root');
 
 function ConfirmModal({ isOpen, onRequestClose, onConfirm, message }) {
