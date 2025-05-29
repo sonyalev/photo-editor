@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# Photo Editor
+Веб-додаток для редагування фотографій із підтримкою автентифікації, збереження зображень у хмарі та обробки повідомлень користувачів.
+______________________________________________
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Основні можливості
+- Завантаження та редагування зображень (фільтри, обрізка).
+- Збереження зображень у хмарі для зареєстрованих користувачів.
+- Реєстрація та автентифікація користувачів.
+- Форма для надсилання повідомлень.
 
-## Available Scripts
+## Технології
+- Backend: Node.js, Express, PostgreSQL, Multer, Bcrypt.
+- Frontend: React, React Router, react-cropper, react-toastify, Canvas API.
+- Стилі: CSS, Google Fonts.
 
-In the project directory, you can run:
+## Встановлення
 
-### `npm start`
+1. Клонувати репозиторій
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+       git clone https://github.com/sonyalev/photo-editor/tree/final
+       cd photo-editor
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Встановити залежності
+- Для backend
 
-### `npm test`
+      cd backend
+      npm install  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Для frontend
 
-### `npm run build`
+      cd frontend
+      npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Налаштувати змінні середовища
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ - Створіть файл .env у папці backend і додайте
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+       DB_USER=your_db_user
+       DB_PASSWORD=your_db_password
+       DB_HOST=your_db_host
+       DB_PORT=your_db_port
+       DB_NAME=your_db_name
 
-### `npm run eject`
+- У папці frontend створіть .env
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+      REACT_APP_API_URL=http://localhost:5000
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Налаштувати базу даних
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Створіть базу даних PostgreSQL і таблиці
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL
+      );
 
-## Learn More
+      CREATE TABLE images (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id),
+        filename VARCHAR(255) NOT NULL,
+        filepath VARCHAR(255) NOT NULL,
+        uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+       );
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+      CREATE TABLE contacts (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        inquiry_type VARCHAR(50) NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+       );
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Запустити проєкт
+ - Backend
 
-### Code Splitting
+       cd backend
+       npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Frontend
 
-### Analyzing the Bundle Size
+       cd frontend
+       npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Автор
+ [_Левчук Софія_](https://www.linkedin.com/in/sofia-levchuk-98a4062a5/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
