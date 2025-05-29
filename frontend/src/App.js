@@ -1,4 +1,3 @@
-// frontend/src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -13,8 +12,8 @@ import EditorPage from './pages/EditorPage';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import './styles/Global.css';
-import { ToastContainer } from 'react-toastify'; // Імпорт ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Імпорт стилів для react-toastify
+import { ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 
 

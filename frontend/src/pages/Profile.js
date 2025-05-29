@@ -1,10 +1,9 @@
-// frontend/src/pages/Profile.js
 import React from 'react';
 import ImageUploader from '../components/ImageUploader';
 import SavedImages from '../components/SavedImages';
 
 function Profile({ userId }) {
-  console.log("Рендер профілю з userId:", userId); // <-- ось тут
+  console.log("Рендер профілю з userId:", userId); 
 
   const handleImageUpload = async (e) => {
     const formData = new FormData();
@@ -16,7 +15,7 @@ function Profile({ userId }) {
       body: formData,
     });
 
-    window.location.reload(); // для оновлення списку
+    window.location.reload(); 
   };
 
   return (

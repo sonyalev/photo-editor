@@ -9,7 +9,7 @@ function EditorPage() {
     const editImageURL = localStorage.getItem('editImageURL');
     if (editImageURL) {
       setImageSrc(editImageURL);
-      localStorage.removeItem('editImageURL'); // очистити після використання
+      localStorage.removeItem('editImageURL'); 
     }
   }, []);
 
@@ -31,7 +31,7 @@ function EditorPage() {
       {imageSrc && (
         <div>
           <img src={imageSrc} alt="Selected" style={{ maxWidth: '100%' }} />
-          {/* Тут твій canvas/редактор */}
+          {}
         </div>
       )}
     </div>

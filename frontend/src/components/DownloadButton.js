@@ -1,4 +1,3 @@
-// frontebd/src/components/DownloadButton.js
 import React from 'react';
 
 function DownloadButton({ imageUrl, cssFilter = 'none', filename = 'edited-image.png', buttonClass }) {

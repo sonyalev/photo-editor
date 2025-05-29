@@ -1,4 +1,3 @@
-// frontend/src/pages/Home.js
 import React, { useState, useRef } from 'react';
 import Cropper from 'react-cropper';
 import ImageUploader from '../components/ImageUploader';

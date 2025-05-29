@@ -1,9 +1,8 @@
-// frontend/src/components/About.js
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaPaintBrush, FaCloudUploadAlt, FaUsers, FaImage, FaEdit, FaLinkedin } from 'react-icons/fa';
 import '../styles/Global.css';
-import sepiaImage from '../assets/images/sepia.png'; // Імпорт зображень
+import sepiaImage from '../assets/images/sepia.png'; 
 import cropImage from '../assets/images/crop.png';
 import vividImage from '../assets/images/vivid.png';
 

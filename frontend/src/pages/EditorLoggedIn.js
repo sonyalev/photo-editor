@@ -1,7 +1,6 @@
-// frontend/src/pages/EditorLoggedIn.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Імпорт toast
+import { toast } from 'react-toastify';
 import Cropper from 'react-cropper';
 import ImageUploader from '../components/ImageUploader';
 import ImagePreview from '../components/ImagePreview';
@@ -123,7 +122,7 @@ function EditorLoggedIn() {
           });
 
           if (res.ok) {
-            toast.success('Фото успішно збережено!'); // Сповіщення про успіх
+            toast.success('Фото успішно збережено!'); 
           } else {
             toast.error('Помилка збереження фото');
           }

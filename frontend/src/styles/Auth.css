@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #f0f8ff; /* Такий же фон, як у SavedImages.css */
+  background: #f0f8ff; 
   font-family: 'Inter', sans-serif;
   padding: 20px;
 }
@@ -49,9 +49,9 @@
 }
 
 .auth-form button {
-  background: #bed5fb; /* Такий же фон, як у custom-button */
+  background: #bed5fb; 
   border: none;
-  border-radius: 10px; /* Така ж форма, як у custom-button */
+  border-radius: 10px; 
   box-sizing: border-box;
   color: #000000;
   font-family: 'Inter', sans-serif;

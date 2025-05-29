@@ -1,4 +1,3 @@
-// frontebd/src/components/ImagePreview.js
 import React from 'react';
 
 function ImagePreview({ image, cssFilter }) {

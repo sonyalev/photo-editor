@@ -1,6 +1,5 @@
-// frontend/src/components/ImageEditor.js
 import React, { useRef, useState, useEffect } from 'react';
-import { toast } from 'react-toastify'; // Імпорт toast
+import { toast } from 'react-toastify'; 
 import Cropper from 'react-cropper';
 import FilterSelector from './Editor/FilterSelector';
 import '../styles/SavedImages.css';
@@ -24,7 +23,7 @@ function ImageEditor({ image, onSave, onSaveNew, onClose }) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
 
-      // Обмежуємо максимальну ширину до 800px
+      
       const maxWidth = 800;
       let width = img.width;
       let height = img.height;

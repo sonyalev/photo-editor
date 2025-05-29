@@ -1,4 +1,3 @@
-// frontend/src/components/SavedImages.js
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ImageEditor from './ImageEditor';
@@ -31,13 +30,11 @@ function SavedImages({ userId }) {
       imgs.map((img) => (img.id === updatedImage.id ? updatedImage : img))
     );
     setEditingImage(null);
-    // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
   };
 
   const handleSaveNew = (newImage) => {
     setImages((imgs) => [newImage, ...imgs]);
     setEditingImage(null);
-    // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
   };
 
   const handleDelete = async (imageId) => {
@@ -53,9 +50,8 @@ function SavedImages({ userId }) {
 
       if (!res.ok) throw new Error('Не вдалося видалити зображення');
 
-      // Оновлюємо список зображень
+
       setImages((imgs) => imgs.filter((img) => img.id !== imageToDelete));
-      // Видалено toast.success, оскільки сповіщення генерується в ImageEditor.js
     } catch (err) {
       toast.error('Помилка: ' + err.message);
     } finally {

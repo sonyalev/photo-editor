@@ -1,11 +1,10 @@
-// frontebd/src/components/ImageUploader.js
 import React from 'react';
 
 function ImageUploader({ onImageChange, buttonClass }) {
   const handleInputChange = (e) => {
-    console.log('Input change triggered:', e.target.files); // Дебаг: чи викликається подія
+    console.log('Input change triggered:', e.target.files); 
     if (e.target.files && e.target.files[0]) {
-      console.log('File selected:', e.target.files[0].name); // Дебаг: ім’я файлу
+      console.log('File selected:', e.target.files[0].name); 
       onImageChange(e);
     } else {
       console.log('No file selected');
@@ -13,10 +12,10 @@ function ImageUploader({ onImageChange, buttonClass }) {
   };
 
   const handleButtonClick = () => {
-    console.log('Button clicked'); // Дебаг: чи реєструється клік на кнопці
+    console.log('Button clicked'); 
     const input = document.getElementById('image-upload');
     if (input) {
-      input.click(); // Програмно викликаємо клік на input
+      input.click(); 
       console.log('Programmatically triggered input click');
     } else {
       console.error('Input element not found');
