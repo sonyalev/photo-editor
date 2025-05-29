@@ -124,7 +124,6 @@ router.delete('/:id', async (req, res) => {
     fs.unlink(path.resolve(filePath), (err) => {
       if (err) {
         console.error('Помилка видалення файлу:', err);
-        // Не зупиняємо, просто логіруємо помилку
       }
     });
 
