@@ -1,4 +1,3 @@
-// backend/src/routes/images.js
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
@@ -6,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const pool = require('../config/db');
 
-// Налаштування multer для збереження файлів
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../uploads'));
@@ -18,7 +17,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Завантаження нового зображення
+
 router.post('/upload', upload.single('image'), async (req, res) => {
   const { userId } = req.body;
 
@@ -46,7 +45,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-// заміна існуючого зображення за id
+
 router.put('/:id', upload.single('image'), async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
@@ -60,7 +59,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
     const filePath = file.path.replace(/\\/g, '/');
     const filename = file.filename;
 
-    // Оновлення запису у БД
+   
     const result = await pool.query(
       'UPDATE images SET filename = $1, filepath = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
       [filename, filePath, id, userId]
@@ -80,7 +79,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
   }
 });
 
-// Отримати всі фото користувача
+
 router.get('/user/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -104,12 +103,10 @@ router.get('/user/:userId', async (req, res) => {
 
 
 
-// Видалення зображення за id
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Знаходимо шлях до файлу в БД
     const result = await pool.query('SELECT filepath FROM images WHERE id = $1', [id]);
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Зображення не знайдено' });
@@ -117,14 +114,11 @@ router.delete('/:id', async (req, res) => {
 
     const filePath = result.rows[0].filepath;
 
-    // Видаляємо запис з БД
     await pool.query('DELETE FROM images WHERE id = $1', [id]);
 
-    // Видаляємо файл з файлової системи (папка uploads)
     fs.unlink(path.resolve(filePath), (err) => {
       if (err) {
         console.error('Помилка видалення файлу:', err);
-        // Не зупиняємо, просто логіруємо помилку
       }
     });
 

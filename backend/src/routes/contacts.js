@@ -1,13 +1,11 @@
-// backend/src/routes/contacts.js
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-// Ендпоінт для збереження повідомлень
+
 router.post('/', async (req, res) => {
   const { first_name, last_name, email, inquiry_type, message } = req.body;
   try {
-    // Базова валідація
     if (!first_name || !last_name || !email || !inquiry_type || !message) {
       return res.status(400).json({ message: 'Усі поля обов’язкові' });
     }
@@ -29,7 +27,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Ендпоінт для отримання всіх повідомлень
 router.get('/', async (req, res) => {
   try {
     const query = 'SELECT * FROM contacts ORDER BY created_at DESC;';
