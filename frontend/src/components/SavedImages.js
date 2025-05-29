@@ -1,5 +1,4 @@
 // frontend/src/components/SavedImages.js
-// frontend/src/components/SavedImages.js
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ImageEditor from './ImageEditor';
