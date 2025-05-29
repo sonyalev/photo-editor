@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Неправильний пароль' });
     }
 
-    // Повертаємо успішну відповідь (тут можна також додати токен, якщо будеш використовувати JWT)
+  
     res.status(200).json({ message: 'Успішний вхід', user: { id: user.id, email: user.email } });
 
   } catch (err) {
