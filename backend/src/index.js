@@ -30,7 +30,7 @@ wss.on('connection', (ws) => {
 });
 
 app.use(cors({
-  origin: 'https://photo-editor-zeta-virid.vercel.app', 
+  origin: 'photo-editor-drab.vercel.app', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
