@@ -1,22 +1,25 @@
-const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const pool = require('../config/db');
 
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads'));
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + '-' + file.originalname;
-    cb(null, uniqueName);
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const upload = multer({ storage });
 
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'photo-editor',
+    allowed_formats: ['jpg', 'png'],
+  },
+});
+
+const upload = multer({ storage });
 
 router.post('/upload', upload.single('image'), async (req, res) => {
   const { userId } = req.body;
@@ -27,16 +30,13 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       return res.status(400).json({ message: 'Файл не надано' });
     }
 
-    const filePath = file.path.replace(/\\/g, '/');
-    const filename = file.filename;
-
     const result = await pool.query(
       'INSERT INTO images (user_id, filename, filepath) VALUES ($1, $2, $3) RETURNING *',
-      [userId, filename, filePath]
+      [userId, file.filename, file.path]
     );
 
     const image = result.rows[0];
-    image.url = `http://localhost:5000/uploads/${filename}`;
+    image.url = file.path;
 
     res.json({ message: 'Файл збережено', image });
   } catch (err) {
@@ -44,7 +44,6 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Помилка сервера' });
   }
 });
-
 
 router.put('/:id', upload.single('image'), async (req, res) => {
   const { id } = req.params;
@@ -56,13 +55,9 @@ router.put('/:id', upload.single('image'), async (req, res) => {
       return res.status(400).json({ message: 'Файл не надано' });
     }
 
-    const filePath = file.path.replace(/\\/g, '/');
-    const filename = file.filename;
-
-   
     const result = await pool.query(
       'UPDATE images SET filename = $1, filepath = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
-      [filename, filePath, id, userId]
+      [file.filename, file.path, id]
     );
 
     if (result.rowCount === 0) {
@@ -70,7 +65,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
     }
 
     const image = result.rows[0];
-    image.url = `http://localhost:5000/uploads/${filename}`;
+    image.url = file.path;
 
     res.json({ message: 'Зображення оновлено', image });
   } catch (err) {
@@ -78,7 +73,6 @@ router.put('/:id', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Помилка сервера' });
   }
 });
-
 
 router.get('/user/:userId', async (req, res) => {
   const { userId } = req.params;
@@ -91,7 +85,7 @@ router.get('/user/:userId', async (req, res) => {
 
     const images = result.rows.map(img => ({
       ...img,
-      url: `http://localhost:5000/uploads/${img.filename}`
+      url: img.filepath,
     }));
 
     res.json({ images });
@@ -101,26 +95,20 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-
-
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('SELECT filepath FROM images WHERE id = $1', [id]);
+    const result = await pool.query('SELECT filepath, filename FROM images WHERE id = $1', [id]);
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Зображення не знайдено' });
     }
 
-    const filePath = result.rows[0].filepath;
+    const { filename } = result.rows[0];
+
+    await cloudinary.uploader.destroy(filename);
 
     await pool.query('DELETE FROM images WHERE id = $1', [id]);
-
-    fs.unlink(path.resolve(filePath), (err) => {
-      if (err) {
-        console.error('Помилка видалення файлу:', err);
-      }
-    });
 
     res.json({ message: 'Зображення видалено' });
   } catch (err) {
@@ -128,6 +116,5 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Внутрішня помилка сервера' });
   }
 });
-
 
 module.exports = router;

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-
 router.post('/', async (req, res) => {
   const { first_name, last_name, email, inquiry_type, message } = req.body;
   try {
