@@ -30,7 +30,7 @@ wss.on('connection', (ws) => {
 });
 
 app.use(cors({
-  origin: 'https://photo-editor-drab.vercel.app', 
+  origin: 'https://photo-editor-5e1o4bczi-sofias-projects-677fb3cd.vercel.app', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
