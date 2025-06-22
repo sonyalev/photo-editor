@@ -21,7 +21,23 @@ wss.on('connection', (ws) => {
 });
 
 
-app.use(cors());
+const allowedOrigins = [
+  'https://photo-editor-drab.vercel.app',
+  'https://photo-editor-5e1o4bczi-sofias-projects-677fb3cd.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Дозволити запити без origin (наприклад, curl, Postman) або зі списку
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS: доступ заборонено'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
